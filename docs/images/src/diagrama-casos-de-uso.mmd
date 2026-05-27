@@ -1,0 +1,18 @@
+graph LR
+    Cidadao((Cidadao))
+    Gestor((Gestor<br>Publico))
+    Admin((Administrador))
+
+    Cidadao --> Cadastrar[UC-01<br>Cadastrar Usuario]
+    Cidadao --> Autenticar[UC-02<br>Autenticar Usuario]
+    Cidadao --> Registrar[UC-03<br>Registrar Denuncia]
+    Cidadao --> Acompanhar[UC-04<br>Acompanhar Denuncia]
+    Cidadao --> Mapa[UC-05<br>Visualizar Mapa Publico]
+
+    Gestor --> Gerenciar[UC-06<br>Gerenciar Denuncias]
+    Gestor --> Relatorios[UC-07<br>Gerar Relatorios]
+
+    Admin --> Perfis[UC-08<br>Gerenciar Perfis]
+
+    Gestor -.-> Autenticar
+    Admin -.-> Autenticar

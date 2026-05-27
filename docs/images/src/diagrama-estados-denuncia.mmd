@@ -1,0 +1,10 @@
+stateDiagram-v2
+    [*] --> Registrada : Cidadao cria denuncia
+    Registrada --> EmAnalise : Gestor inicia analise
+    EmAnalise --> EmExecucao : Gestor despacha equipe
+    EmExecucao --> Resolvida : Gestor confirma resolucao
+    Resolvida --> [*]
+
+    Registrada --> Registrada : Cidadao edita descricao
+    EmAnalise --> Registrada : Gestor solicita mais info
+    EmAnalise --> Resolvida : Gestor resolve direto

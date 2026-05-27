@@ -1,0 +1,19 @@
+sequenceDiagram
+    participant C as Cidadao
+    participant W as WebApp
+    participant A as API REST
+    participant D as Database
+
+    C->>W: Acessa Minhas Denuncias
+    W->>A: GET /api/denuncias
+    A->>D: SELECT denuncias + status
+    D-->>A: lista de denuncias
+    A-->>W: 200 + JSON
+    W-->>C: Lista com status e datas
+
+    C->>W: Seleciona uma denuncia
+    W->>A: GET /api/denuncias/:id
+    A->>D: SELECT denuncia + historico
+    D-->>A: detalhes + timeline
+    A-->>W: 200 + JSON
+    W-->>C: Timeline visual

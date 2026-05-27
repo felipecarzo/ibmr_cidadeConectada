@@ -1,0 +1,44 @@
+graph TD
+    START((Inicio))
+    END1((Fim))
+
+    subgraph Cidadao[Ator: Cidadao]
+        A[Acessar Nova Denuncia]
+        B[Tirar Foto]
+        C[Selecionar Categoria]
+        D[Confirmar Envio]
+    end
+
+    subgraph Sistema[Sistema]
+        E[Ativar Camera + GPS]
+        F[Exibir Pre-visualizacao]
+        G{<10 denuncias hoje?}
+        H[Registrar Denuncia]
+        I[Gerar Codigo Acompanhamento]
+        J[Notificar Orgao Competente]
+    end
+
+    subgraph Gestor[Ator: Gestor Publico]
+        K[Analisar Denuncia]
+        L{Decidir Acao}
+        M[Atualizar Status]
+    end
+
+    START --> A
+    A --> E
+    E --> B
+    B --> F
+    F --> C
+    C --> D
+    D --> G
+    G -- Sim --> H
+    G -- Nao --> N[Bloquear: limite atingido]
+    N --> END1
+    H --> I
+    I --> J
+    J --> K
+    K --> L
+    L -- Resolver --> M
+    L -- Devolver --> O[Solicitar mais informacoes]
+    O --> END1
+    M --> END1

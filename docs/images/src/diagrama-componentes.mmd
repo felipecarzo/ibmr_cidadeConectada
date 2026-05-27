@@ -1,0 +1,72 @@
+graph TD
+    subgraph Frontend[Frontend - WebApp Responsivel]
+        A[auth.js]
+        D[denuncia.js]
+        M[mapa.js]
+        DB[dashboard.js]
+        APP[app.js]
+    end
+
+    subgraph API[API REST]
+        R1[routes/auth.js]
+        R2[routes/denuncias.js]
+        R3[routes/dashboard.js]
+        R4[routes/admin.js]
+    end
+
+    subgraph Services[Camada de Servico]
+        S1[AuthService]
+        S2[DenunciaService]
+        S3[RelatorioService]
+    end
+
+    subgraph Middleware[Middleware]
+        MW1[verificarToken]
+        MW2[verificarPerfil]
+    end
+
+    subgraph Data[Camada de Dados]
+        M1[models/Usuario]
+        M2[models/Denuncia]
+        M3[models/Categoria]
+    end
+
+    subgraph DB[Banco PostgreSQL]
+        T1[tabela usuario]
+        T2[tabela denuncia]
+        T3[tabela categoria]
+        T4[tabela perfil_acesso]
+        T5[tabela historico_status]
+    end
+
+    APP --> A
+    APP --> D
+    APP --> M
+    APP --> DB
+
+    A --> R1
+    D --> R2
+    DB --> R3
+    DB --> R4
+
+    R1 --> MW1
+    R2 --> MW1
+    R3 --> MW1
+    R4 --> MW1
+
+    MW1 --> MW2
+    MW2 --> S1
+    MW2 --> S2
+    MW2 --> S3
+
+    S1 --> M1
+    S2 --> M2
+    S2 --> M3
+    S3 --> M1
+    S3 --> M2
+
+    M1 --> T1
+    M2 --> T2
+    M3 --> T3
+    M1 --> T4
+    M2 --> T5
