@@ -111,19 +111,19 @@ cidade-conectada/
 
 ## 4. Diagrama de Casos de Uso
 
-![Diagrama de Casos de Uso](../images/diagrama-casos-de-uso.png)
+![Diagrama de Casos de Uso](../images/casos-de-uso.png)
 
 ---
 
 ## 5. Diagrama de Classes UML
 
-![Diagrama de Classes UML](../images/class-diagram.png)
+![Diagrama de Classes UML](../images/classes.png)
 
 ---
 
-## 6. Diagrama Entidade-Relacionamento (DER)
+## 6. Diagrama Entidade-Relacionamento (MER — Notação Chen)
 
-![Diagrama ER](../images/diagrama-er.png)
+![MER Notação Chen](../images/mer-chen.png)
 
 ---
 

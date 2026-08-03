@@ -1,0 +1,72 @@
+// MER - Modelo Entidade-Relacionamento (notacao Chen) - Cidade Conectada
+// Conforme material da disciplina: retangulo=entidade, losango=relacionamento,
+// elipse=atributo, atributo-chave sublinhado, cardinalidade (1/N) nas arestas.
+digraph MER {
+  graph [rankdir=TB, splines=true, nodesep=0.5, ranksep=0.7, fontname="Helvetica", label="MER (Notação Chen) — Cidade Conectada", labelloc=t, fontsize=18];
+  node  [fontname="Helvetica", fontsize=11];
+  edge  [fontname="Helvetica", fontsize=11, color="#2C3E50", arrowhead=none];
+
+  // ---------- Entidades (retangulos) ----------
+  node [shape=box, style=filled, fillcolor="#D6EAF8", color="#2C3E50"];
+  perfil_acesso    [label="PERFIL_ACESSO"];
+  usuario          [label="USUARIO"];
+  denuncia         [label="DENUNCIA"];
+  categoria        [label="CATEGORIA"];
+  historico_status [label="HISTORICO_STATUS"];
+
+  // ---------- Relacionamentos (losangos) ----------
+  node [shape=diamond, style=filled, fillcolor="#FCF3CF", color="#2C3E50"];
+  r_possui      [label="possui"];
+  r_registra    [label="registra"];
+  r_classifica  [label="classifica"];
+  r_timeline    [label="possui"];
+  r_altera      [label="altera"];
+
+  // ---------- Atributos (elipses; PK sublinhada via HTML) ----------
+  node [shape=ellipse, style=filled, fillcolor="#FFFFFF", color="#2C3E50"];
+  // usuario
+  u_pk  [label=<<u>idUsuario</u>>];
+  u_nm  [label="nome"];
+  u_em  [label="email"];
+  // perfil_acesso
+  p_pk  [label=<<u>idPerfil</u>>];
+  p_nm  [label="nomePerfil"];
+  // denuncia
+  d_pk  [label=<<u>idDenuncia</u>>];
+  d_st  [label="status"];
+  d_dt  [label="dtCriacao"];
+  // categoria
+  c_pk  [label=<<u>idCategoria</u>>];
+  c_nm  [label="nome"];
+  // historico_status
+  h_pk  [label=<<u>idHistorico</u>>];
+  h_dt  [label="dtAlteracao"];
+
+  // ---------- Ligacoes atributo -> entidade ----------
+  usuario -> u_pk; usuario -> u_nm; usuario -> u_em;
+  perfil_acesso -> p_pk; perfil_acesso -> p_nm;
+  denuncia -> d_pk; denuncia -> d_st; denuncia -> d_dt;
+  categoria -> c_pk; categoria -> c_nm;
+  historico_status -> h_pk; historico_status -> h_dt;
+
+  // ---------- Relacionamentos com cardinalidade ----------
+  // perfil_acesso (1) -- possui -- (N) usuario
+  perfil_acesso -> r_possui [label="1"];
+  r_possui -> usuario       [label="N"];
+
+  // usuario (1) -- registra -- (N) denuncia
+  usuario -> r_registra [label="1"];
+  r_registra -> denuncia [label="N"];
+
+  // categoria (1) -- classifica -- (N) denuncia
+  categoria -> r_classifica [label="1"];
+  r_classifica -> denuncia  [label="N"];
+
+  // denuncia (1) -- possui -- (N) historico_status
+  denuncia -> r_timeline [label="1"];
+  r_timeline -> historico_status [label="N"];
+
+  // usuario (1) -- altera -- (N) historico_status  (gestor responsavel)
+  usuario -> r_altera [label="1"];
+  r_altera -> historico_status [label="N"];
+}

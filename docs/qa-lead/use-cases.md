@@ -7,7 +7,7 @@
 
 ---
 
-![Diagrama de Casos de Uso](../images/diagrama-casos-de-uso.png)
+![Diagrama de Casos de Uso](../images/casos-de-uso.png)
 
 ---
 

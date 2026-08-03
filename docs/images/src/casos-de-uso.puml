@@ -1,0 +1,65 @@
+@startuml casos-de-uso
+!pragma layout smetana
+' Diagrama de Casos de Uso - Cidade Conectada
+' Notacao UML conforme material da disciplina (boneco-palito, oval, caixa-limite, include/extend, generalizacao de ator)
+left to right direction
+skinparam packageStyle rectangle
+skinparam shadowing false
+skinparam usecase {
+  BackgroundColor #FDFDFD
+  BorderColor #2C3E50
+  ArrowColor #2C3E50
+}
+skinparam actorBorderColor #2C3E50
+
+title Diagrama de Casos de Uso — Cidade Conectada
+
+' --- Atores (boneco-palito) ---
+actor "Usuário" as Usuario
+actor "Cidadão" as Cidadao
+actor "Gestor Público" as Gestor
+actor "Administrador" as Admin
+
+' Generalizacao de atores (todos sao Usuario)
+Cidadao --|> Usuario
+Gestor  --|> Usuario
+Admin   --|> Usuario
+
+' --- Caixa de limite do sistema ---
+rectangle "Cidade Conectada" {
+  usecase "UC-01\nCadastrar Usuário" as UC01
+  usecase "UC-02\nAutenticar Usuário" as UC02
+  usecase "UC-03\nRegistrar Denúncia" as UC03
+  usecase "UC-04\nAcompanhar Denúncia" as UC04
+  usecase "UC-05\nVisualizar Mapa Público" as UC05
+  usecase "UC-06\nGerenciar Denúncias" as UC06
+  usecase "UC-07\nGerar Relatórios" as UC07
+  usecase "UC-08\nGerenciar Perfis de Acesso" as UC08
+
+  ' Casos de uso auxiliares (alvo de include/extend)
+  usecase "Validar Limite Diário" as UCval
+  usecase "Informar Limite Atingido" as UClim
+  usecase "Atualizar Status" as UCstatus
+}
+
+' --- Comunicacao (associacao ator <-> caso de uso) ---
+Usuario --> UC02
+
+Cidadao --> UC01
+Cidadao --> UC03
+Cidadao --> UC04
+Cidadao --> UC05
+
+Gestor --> UC06
+Gestor --> UC07
+
+Admin --> UC08
+
+' --- Inclusao (<<include>>) ---
+UC03 ..> UCval : <<include>>
+UC06 ..> UCstatus : <<include>>
+
+' --- Extensao (<<extend>>) ---
+UClim ..> UC03 : <<extend>>
+
+@enduml

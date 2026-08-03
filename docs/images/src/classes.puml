@@ -1,0 +1,103 @@
+@startuml classes
+!pragma layout smetana
+' Diagrama de Classes - Cidade Conectada
+' Notacao UML conforme material: compartimentos (nome/atributos/operacoes),
+' visibilidade (+ publico, - privado, # protegido), multiplicidade, associacao,
+' composicao, dependencia.
+skinparam shadowing false
+skinparam classAttributeIconSize 0
+skinparam class {
+  BackgroundColor #FDFDFD
+  BorderColor #2C3E50
+  ArrowColor #2C3E50
+}
+
+title Diagrama de Classes — Cidade Conectada
+
+' ===== Entidades de dominio =====
+class Usuario {
+  - idUsuario : int
+  - nome : string
+  - email : string
+  - senha : string
+  - dtCriacao : Date
+  - ativo : boolean
+}
+
+class PerfilAcesso {
+  - idPerfil : int
+  - nomePerfil : string
+  - permissoes : string
+}
+
+class Denuncia {
+  - idDenuncia : int
+  - fotoUrl : string
+  - latitude : float
+  - longitude : float
+  - descricao : string
+  - status : string
+  - dtCriacao : Date
+  - dtResolucao : Date
+}
+
+class Categoria {
+  - idCategoria : int
+  - nome : string
+  - icone : string
+  - prazoResolucao : int
+}
+
+class HistoricoStatus {
+  - idHistorico : int
+  - statusAnterior : string
+  - statusNovo : string
+  - dtAlteracao : DateTime
+}
+
+' ===== Camada de servico =====
+class AuthService {
+  + cadastrar(usuario : Usuario) : Usuario
+  + autenticar(email : string, senha : string) : string
+  + validarToken(token : string) : Usuario
+  + recuperarSenha(email : string) : boolean
+}
+
+class DenunciaService {
+  + criar(denuncia : Denuncia) : Denuncia
+  + buscarPorId(id : int) : Denuncia
+  + buscarPorUsuario(idUsuario : int) : List
+  + atualizarStatus(id : int, status : string) : void
+  + buscarParaMapa() : List
+  + validarLimiteDiario(idUsuario : int) : boolean
+}
+
+class RelatorioService {
+  + tempoMedioResolucao() : Map
+  + denunciasPorCategoria() : Map
+  + denunciasPorBairro() : Map
+  + exportarDadosAnonimizados() : List
+}
+
+class AuthMiddleware {
+  + verificarToken() : boolean
+  + verificarPerfil(perfil : string) : boolean
+}
+
+' ===== Associacoes entre entidades (com multiplicidade) =====
+Usuario "1" --> "*" Denuncia : registra
+Usuario "*" --> "1" PerfilAcesso : possui
+Denuncia "*" --> "1" Categoria : classificada em
+Denuncia "1" *-- "*" HistoricoStatus : timeline
+HistoricoStatus "*" --> "1" Usuario : alterado por
+
+' ===== Dependencias (camada de servico usa entidades) =====
+AuthService ..> Usuario
+AuthService ..> PerfilAcesso
+DenunciaService ..> Denuncia
+DenunciaService ..> Categoria
+DenunciaService ..> HistoricoStatus
+RelatorioService ..> Denuncia
+AuthMiddleware ..> AuthService
+
+@enduml

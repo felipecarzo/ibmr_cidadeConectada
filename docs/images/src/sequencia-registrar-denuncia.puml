@@ -1,0 +1,54 @@
+@startuml sequencia-registrar-denuncia
+' Diagrama de Sequencia - UC-03 Registrar Denuncia
+' Notacao UML: linhas de vida (:Classe), mensagens, barras de ativacao, retorno tracejado
+skinparam shadowing false
+skinparam sequence {
+  ArrowColor #2C3E50
+  LifeLineBorderColor #2C3E50
+  ParticipantBorderColor #2C3E50
+  ParticipantBackgroundColor #FDFDFD
+}
+
+title Diagrama de Sequência — UC-03 Registrar Denúncia
+
+actor Cidadão as C
+participant ":WebApp" as W
+participant ":API REST" as A
+participant ":DenunciaService" as S
+database ":Banco" as D
+
+C -> W : acessa "Nova Denúncia"
+activate W
+W --> C : ativa câmera + GPS
+deactivate W
+
+C -> W : tira foto
+activate W
+W --> C : pré-visualização + localização
+C -> W : seleciona categoria
+C -> W : confirma envio
+
+W -> A : POST /api/denuncias
+activate A
+A -> S : criar(denuncia)
+activate S
+
+S -> S : validarLimiteDiario()
+S -> D : INSERT denuncia
+activate D
+D --> S : idDenuncia
+deactivate D
+
+S -> D : INSERT historico_status
+activate D
+D --> S : ok
+deactivate D
+
+S --> A : denúncia criada
+deactivate S
+A --> W : 201 Created
+deactivate A
+W --> C : confirmação + código de acompanhamento
+deactivate W
+
+@enduml

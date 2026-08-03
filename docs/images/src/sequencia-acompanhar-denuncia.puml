@@ -1,0 +1,51 @@
+@startuml sequencia-acompanhar-denuncia
+' Diagrama de Sequencia - UC-04 Acompanhar Denuncia
+skinparam shadowing false
+skinparam sequence {
+  ArrowColor #2C3E50
+  LifeLineBorderColor #2C3E50
+  ParticipantBorderColor #2C3E50
+  ParticipantBackgroundColor #FDFDFD
+}
+
+title Diagrama de Sequência — UC-04 Acompanhar Denúncia
+
+actor Cidadão as C
+participant ":WebApp" as W
+participant ":API REST" as A
+participant ":DenunciaService" as S
+database ":Banco" as D
+
+C -> W : acessa "Minhas Denúncias"
+activate W
+W -> A : GET /api/denuncias
+activate A
+A -> S : buscarPorUsuario(idUsuario)
+activate S
+S -> D : SELECT denuncia WHERE idUsuario
+activate D
+D --> S : lista de denúncias
+deactivate D
+S --> A : lista de denúncias
+deactivate S
+A --> W : 200 OK + lista
+deactivate A
+W --> C : exibe lista
+
+C -> W : seleciona uma denúncia
+W -> A : GET /api/denuncias/:id
+activate A
+A -> S : buscarPorId(id)
+activate S
+S -> D : SELECT denuncia + historico_status
+activate D
+D --> S : denúncia + timeline
+deactivate D
+S --> A : denúncia + timeline
+deactivate S
+A --> W : 200 OK
+deactivate A
+W --> C : timeline (registrada → análise → execução → resolvida)
+deactivate W
+
+@enduml

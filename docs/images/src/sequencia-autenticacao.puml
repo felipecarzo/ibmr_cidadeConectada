@@ -1,0 +1,44 @@
+@startuml sequencia-autenticacao
+' Diagrama de Sequencia - UC-02 Autenticar Usuario
+skinparam shadowing false
+skinparam sequence {
+  ArrowColor #2C3E50
+  LifeLineBorderColor #2C3E50
+  ParticipantBorderColor #2C3E50
+  ParticipantBackgroundColor #FDFDFD
+}
+
+title Diagrama de Sequência — UC-02 Autenticar Usuário
+
+actor Usuário as U
+participant ":WebApp" as W
+participant ":API REST" as A
+participant ":AuthService" as S
+database ":Banco" as D
+
+U -> W : informa e-mail e senha
+activate W
+W -> A : POST /api/auth/login
+activate A
+A -> S : autenticar(email, senha)
+activate S
+S -> D : SELECT usuario WHERE email
+activate D
+D --> S : dados do usuário
+deactivate D
+
+alt credenciais válidas
+  S -> S : gera token JWT
+  S --> A : token
+  A --> W : 200 OK + token
+  W --> U : redireciona para home (conforme perfil)
+else credenciais inválidas
+  S --> A : erro de autenticação
+  A --> W : 401 Unauthorized
+  W --> U : exibe mensagem de erro
+end
+deactivate S
+deactivate A
+deactivate W
+
+@enduml

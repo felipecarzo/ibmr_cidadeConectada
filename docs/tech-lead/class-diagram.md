@@ -1,5 +1,6 @@
 # Diagrama de Classes UML
 
-> Diagrama renderizado externamente (Mermaid → PNG) porque o preview do VS Code nao suporta `classDiagram`. Fonte: `docs/images/src/class-diagram.mmd`. Re-renderizar com: `mmdc -i docs/images/src/class-diagram.mmd -o docs/images/class-diagram.png -w 1280 -b white`
+> Fonte: `docs/images/src/classes.puml` (PlantUML, notação UML conforme material da disciplina).
+> Re-renderizar com: `~/tools/jdk-21*/bin/java -jar ~/tools/plantuml.jar -tpng -o docs/images docs/images/src/classes.puml`
 
-![Diagrama de Classes UML](../images/class-diagram.png)
+![Diagrama de Classes UML](../images/classes.png)
